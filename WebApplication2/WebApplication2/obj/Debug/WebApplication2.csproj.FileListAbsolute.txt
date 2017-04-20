@@ -1,0 +1,9 @@
+C:\Users\user\Documents\Visual Studio 2017\Projects\WebApplication2\WebApplication2\bin\WebApplication2.dll.config
+C:\Users\user\Documents\Visual Studio 2017\Projects\WebApplication2\WebApplication2\bin\WebApplication2.dll
+C:\Users\user\Documents\Visual Studio 2017\Projects\WebApplication2\WebApplication2\bin\WebApplication2.pdb
+C:\Users\user\Documents\Visual Studio 2017\Projects\WebApplication2\WebApplication2\obj\Debug\WebApplication2.dll
+C:\Users\user\Documents\Visual Studio 2017\Projects\WebApplication2\WebApplication2\obj\Debug\WebApplication2.pdb
+C:\Users\user\Documents\Visual Studio 2017\Projects\WebApplication2\WebApplication2\obj\Debug\WebApplication2.csprojResolveAssemblyReference.cache
+C:\Users\User\Documents\Visual Studio 2017\Projects\WebApplication2\WebApplication2\bin\HtmlAgilityPack.dll
+C:\Users\User\Documents\Visual Studio 2017\Projects\WebApplication2\WebApplication2\bin\HtmlAgilityPack.pdb
+C:\Users\User\Documents\Visual Studio 2017\Projects\WebApplication2\WebApplication2\bin\HtmlAgilityPack.xml
