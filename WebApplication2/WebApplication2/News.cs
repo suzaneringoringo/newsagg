@@ -38,7 +38,7 @@ namespace Newss
             title = ne.title;
             pubDate = ne.pubDate;
             link = ne.link;
-            content = ne.link;
+            content = ne.content;
             document = ne.document;
         }
 
@@ -77,7 +77,7 @@ namespace Newss
         public void RemoveScriptAndStyle(HtmlNode node)
         {
             node.Descendants()
-            .Where(n => n.Name == "script" || n.Name == "style")
+            .Where(n => n.Name == "script" || n.Name == "style" || n.Name == "div")
             .ToList()
             .ForEach(n => n.Remove());
         }
@@ -87,16 +87,17 @@ namespace Newss
             document = web.Load(link);
         }
 
-        public void ParseContent()
+        public void ParseContent(string st)
         {
             LoadLink();
             StringBuilder sb = new StringBuilder();
             foreach (HtmlNode node in document.DocumentNode.SelectNodes("//div"))
             {
-                if (node.Attributes["class"] != null && node.Attributes["class"].Value == "detail_text")
+                if (node.Attributes["class"] != null && node.Attributes["class"].Value == st)
                 {
                     RemoveComments(node);
                     RemoveScriptAndStyle(node);
+                    sb.Append(node.InnerText);
                     break;
                 }
             }
