@@ -46,7 +46,8 @@ namespace NewsAgt
         public void ParseDetik(string pat)
         {
             string url = "http://rss.detik.com/index.php/";
-            string[] set = { "detikcom" };
+            string[] set = {"detikcom", "indeks", "finance", "hot", "inet", "sport",
+                            "otomotif", "wolipop", "health"};
             foreach (string st in set)
             {
                 try
@@ -60,7 +61,14 @@ namespace NewsAgt
                                             item.Links.First().Uri.ToString());
                         try
                         {
-                            //temp.ParseContent();
+                            if (st == "wolipop" || st == "health")
+                            {
+                                temp.ParseContent("text_detail");
+                            }
+                            else
+                            {
+                                temp.ParseContent("detail_text");
+                            }
                             if (temp.StringMatchingKMP(pat) != -1)
                             {
                                 Add(temp);
