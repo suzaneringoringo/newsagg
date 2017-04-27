@@ -15,6 +15,9 @@ namespace Newss
         private HtmlDocument document;
         private static HtmlWeb web = new HtmlWeb();
 
+        /*
+         * Konstruktor
+         */
         public News()
         {
             title = "";
@@ -246,14 +249,9 @@ namespace Newss
         public int StringMatchingBoyerMoore(string pat)
         {
             int[] last = BuildLast(pat);
-            for (int l = 0; l < 128; l++)
-            {
-                Console.Write(last[l] + " ");
-            }
-            Console.WriteLine();
-            string temp;
-            temp = title + content;
-            int n = temp.Length;
+            string text;
+            text = title + content;
+            int n = text.Length;
             int m = pat.Length;
             int i = m - 1;
 
@@ -266,7 +264,7 @@ namespace Newss
                 int j = m - 1;
                 do
                 {
-                    if (char.ToUpperInvariant(pat[j]) == char.ToUpperInvariant(temp[i]))
+                    if (char.ToUpperInvariant(pat[j]) == char.ToUpperInvariant(text[i]))
                     {
                         if (j == 0)
                         {
@@ -280,7 +278,7 @@ namespace Newss
                     }
                     else
                     {
-                        int lo = last[temp[i]];
+                        int lo = last[char.ToUpperInvariant(text[i])];
                         i = i + m - Math.Min(j, 1 + lo);
                         j = m - 1;
                     }
@@ -337,16 +335,16 @@ namespace Newss
         /* Return array storing index of last
          * occurence of each ASCII char in pattern. */
         {
-            int[] last = new int[128]; // ASCII char set
+            int[] last = new int[97]; // ASCII char set
 
-            for (int i = 0; i < 128; i++)
+            for (int i = 0; i < 97; i++)
             {
                 last[i] = -1; // initialize array
             }
 
             for (int i = 0; i < pattern.Length; i++)
             {
-                last[pattern[i]] = i;
+                last[char.ToUpperInvariant(pattern[i])] = i;
             }
 
             return last;

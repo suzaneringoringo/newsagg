@@ -20,20 +20,32 @@ namespace WebApplication2
         protected void Cari_Click(object sender, EventArgs e)
         {
             NewsAggregator na = new NewsAggregator();
-            na.ParseTempo(SearchBox.Text, RadioButtonList1.SelectedValue);
+            
+            na.ParseDetik(SearchBox.Text, RadioButtonList1.SelectedValue);
             if (na.news.Count == 0)
             {
                 //ListItem li = new ListItem("Gak ada");
                 //BulletedList1.Items.Add(li);
             }
-            HtmlGenericControl tes = new HtmlGenericControl("tes");
             HtmlGenericControl nl = new HtmlGenericControl("nl");
-            list.Controls.Add(tes);
-            tes.InnerText = "Displaying " + na.news.Count.ToString() + " results:";
+            nl.InnerText = "Displaying " + na.news.Count.ToString() + " results:";
             list.Controls.Add(nl);
 
             foreach (News n in na.news)
             {
+                int[] test;
+                string pattern;
+            pattern = SearchBox.Text;
+                test = News.BuildLast(pattern);
+                /*
+                HtmlGenericControl tes = new HtmlGenericControl("tes");
+                tes.InnerText = "";
+                for (int i = 0; i < test.Length; i++)
+                {
+                    tes.InnerText = tes.InnerText + " " + test[i].ToString();
+                }
+                list.Controls.Add(tes);
+                */
                 HtmlGenericControl li = new HtmlGenericControl("li");
                 list.Controls.Add(li);
                 HtmlGenericControl a = new HtmlGenericControl("a");
