@@ -249,6 +249,13 @@ namespace Newss
         public int StringMatchingBoyerMoore(string pat)
         {
             int[] last = BuildLast(pat);
+            /*
+            for (int l = 0; l < 97; l++)
+            {
+                Console.Write(last[l] + " ");
+            }
+            */
+            Console.WriteLine();
             string text;
             text = title + content;
             int n = text.Length;
@@ -264,7 +271,7 @@ namespace Newss
                 int j = m - 1;
                 do
                 {
-                    if (char.ToUpperInvariant(pat[j]) == char.ToUpperInvariant(text[i]))
+                    if (char.ToUpperInvariant(pat[j]).ToString() == char.ToUpperInvariant(text[i]).ToString())
                     {
                         if (j == 0)
                         {
@@ -278,7 +285,15 @@ namespace Newss
                     }
                     else
                     {
-                        int lo = last[char.ToUpperInvariant(text[i])];
+                        int lo;
+                        if (char.ToUpper(text[i]) == 8211)
+                        {
+                            lo = last[128];
+                        }
+                        else
+                        {
+                            lo = last[char.ToUpperInvariant(text[i])];
+                        }
                         i = i + m - Math.Min(j, 1 + lo);
                         j = m - 1;
                     }
@@ -335,16 +350,23 @@ namespace Newss
         /* Return array storing index of last
          * occurence of each ASCII char in pattern. */
         {
-            int[] last = new int[97]; // ASCII char set
+            int[] last = new int[129]; // ASCII char set
 
-            for (int i = 0; i < 97; i++)
+            for (int i = 0; i < 129; i++)
             {
                 last[i] = -1; // initialize array
             }
 
             for (int i = 0; i < pattern.Length; i++)
             {
-                last[char.ToUpperInvariant(pattern[i])] = i;
+                if (char.ToUpperInvariant(pattern[i]) == 8211)
+                {
+                    last[129] = i;
+                }
+                else
+                {
+                    last[char.ToUpperInvariant(pattern[i])] = i;
+                }
             }
 
             return last;

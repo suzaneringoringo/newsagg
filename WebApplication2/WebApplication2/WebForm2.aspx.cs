@@ -21,7 +21,7 @@ namespace WebApplication2
         {
             NewsAggregator na = new NewsAggregator();
             
-            na.ParseDetik(SearchBox.Text, RadioButtonList1.SelectedValue);
+            na.ParseViva(SearchBox.Text, RadioButtonList1.SelectedValue);
             if (na.news.Count == 0)
             {
                 //ListItem li = new ListItem("Gak ada");
@@ -35,7 +35,7 @@ namespace WebApplication2
             {
                 int[] test;
                 string pattern;
-            pattern = SearchBox.Text;
+                pattern = SearchBox.Text;
                 test = News.BuildLast(pattern);
                 /*
                 HtmlGenericControl tes = new HtmlGenericControl("tes");
