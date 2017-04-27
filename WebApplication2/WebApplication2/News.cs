@@ -286,15 +286,15 @@ namespace Newss
                     else
                     {
                         int lo;
-                        if (char.ToUpper(text[i]) == 8211)
+                        if ((char.ToUpper(text[i]) < 0) || (char.ToUpper(text[i]) > 127))
                         {
-                            lo = last[128];
+                            i++;
                         }
                         else
                         {
                             lo = last[char.ToUpperInvariant(text[i])];
+                            i = i + m - Math.Min(j, 1 + lo);
                         }
-                        i = i + m - Math.Min(j, 1 + lo);
                         j = m - 1;
                     }
                 } while (i <= (n - 1));
@@ -350,23 +350,16 @@ namespace Newss
         /* Return array storing index of last
          * occurence of each ASCII char in pattern. */
         {
-            int[] last = new int[129]; // ASCII char set
+            int[] last = new int[128]; // ASCII char set
 
-            for (int i = 0; i < 129; i++)
+            for (int i = 0; i < 128; i++)
             {
                 last[i] = -1; // initialize array
             }
 
             for (int i = 0; i < pattern.Length; i++)
             {
-                if (char.ToUpperInvariant(pattern[i]) == 8211)
-                {
-                    last[129] = i;
-                }
-                else
-                {
-                    last[char.ToUpperInvariant(pattern[i])] = i;
-                }
+                last[char.ToUpperInvariant(pattern[i])] = i;
             }
 
             return last;
