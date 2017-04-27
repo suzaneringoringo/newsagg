@@ -16,15 +16,15 @@
 	    <br>
 		<br>
 		<asp:RadioButtonList ID="RadioButtonList1" runat="server" style="z-index: 1; height: 27px; width: 151px; text-align: left">
-            <asp:ListItem>Boyer-Moore</asp:ListItem>
+            <asp:ListItem Selected="True">Boyer-Moore</asp:ListItem>
             <asp:ListItem>KMP</asp:ListItem>
             <asp:ListItem>Regex</asp:ListItem>
         </asp:RadioButtonList>
         <br>
 	    <asp:Button ID="Cari" runat="server" style="z-index: 1;" Text="Cari!" OnClick="Cari_Click" />
-        <asp:BulletedList ID="BulletedList1" runat="server" DisplayMode= "hyperlink" style="z-index: 1; height: 19px; width: 576px; text-align: left ">
+        <ol id="list" runat="server" style="z-index: 1; height: 19px; width: 576px; text-align: left ">
             
-        </asp:BulletedList>
+        </ol>
 	</form>
 	</center>
 </body>

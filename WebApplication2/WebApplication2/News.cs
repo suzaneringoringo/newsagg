@@ -82,12 +82,28 @@ namespace Newss
             .ForEach(n => n.Remove());
         }
 
+        public void RemoveAAndSpan(HtmlNode node)
+        {
+            node.Descendants()
+            .Where(n => n.Name == "a" || n.Name == "span")
+            .ToList()
+            .ForEach(n => n.Remove());
+        }
+
+        public void RemoveSpanScriptAndIns(HtmlNode node)
+        {
+            node.Descendants()
+            .Where(n => n.Name == "span" || n.Name == "script" || n.Name == "ins" || n.Name == "div")
+            .ToList()
+            .ForEach(n => n.Remove());
+        }
+
         public void LoadLink()
         {
             document = web.Load(link);
         }
 
-        public void ParseContent(string st)
+        public void ParseContentDetik(string st)
         {
             LoadLink();
             StringBuilder sb = new StringBuilder();
@@ -104,14 +120,99 @@ namespace Newss
             content = sb.ToString().Trim();
         }
 
-        public int StringMatch(string pat)
+        public void ParseContentViva()
         {
-            return 0;
+            LoadLink();
+            StringBuilder sb = new StringBuilder();
+            foreach (HtmlNode node in document.DocumentNode.SelectNodes("//span"))
+            {
+                if (node.Attributes["itemprop"] != null && node.Attributes["itemprop"].Value == "description")
+                {
+                    sb.Append(node.InnerText);
+                    break;
+                }
+            }
+            content = sb.ToString().Trim();
+        }
+
+        public void ParseContentTempo()
+        {
+            LoadLink();
+            StringBuilder sb = new StringBuilder();
+            foreach (HtmlNode node in document.DocumentNode.SelectNodes("//p"))
+            {
+                RemoveAAndSpan(node);
+                sb.Append(node.InnerText);
+                //break;
+            }
+            content = sb.ToString().Trim();
+        }
+
+        public void ParseContentAntara()
+        {
+            LoadLink();
+            StringBuilder sb = new StringBuilder();
+            foreach (HtmlNode node in document.DocumentNode.SelectNodes("//div"))
+            {
+                if (node.Attributes["id"] != null && node.Attributes["id"].Value == "content_news")
+                {
+                    RemoveSpanScriptAndIns(node);
+                    sb.Append(node.InnerText);
+                    break;
+                }
+            }
+            content = sb.ToString().Trim();
+        }
+
+        public int StringMatching(string pat, string rad)
+        {
+            int ind;
+            if (rad == "Boyer-Moore")
+            {
+                ind = StringMatchingBoyerMoore(pat);
+            }
+            else if (rad == "KMP")
+            {
+                ind = StringMatchingKMP(pat);
+            }
+            else
+            {
+                ind = StringMatchingRegex(pat);
+            }
+            if ((ind != -1) && (ind >= title.Length))
+            {
+                if (ind < ((content.Length) + (title.Length) - 1))
+                {
+                    content = (content.Substring(ind - title.Length, 200) + " . . . .");
+                }
+                else
+                {
+                    content = content.Substring(ind - title.Length, 200);
+                }
+                if (ind >= title.Length)
+                {
+                    content = (". . . " + content);
+                }
+            }
+            else
+            {
+                if (content.Length > 200)
+                {
+                    content = content.Substring(0, 200) + " . . . .";
+                }
+                else
+                {
+                    content = content.Substring(0, 200);
+                }
+            }
+            return ind;
         }
 
         public int StringMatchingKMP(string pattern)
         {
-            int n = content.Length;
+            string temp;
+            temp = title + content;
+            int n = temp.Length;
             int m = pattern.Length;
 
             int[] fail = computeFail(pattern);
@@ -121,7 +222,7 @@ namespace Newss
 
             while (i < n)
             {
-                if (char.ToUpperInvariant(pattern[j]) == char.ToUpperInvariant(content[i]))
+                if (char.ToUpperInvariant(pattern[j]) == char.ToUpperInvariant(temp[i]))
                 {
                     if (j == (m - 1))
                     {
@@ -150,7 +251,9 @@ namespace Newss
                 Console.Write(last[l] + " ");
             }
             Console.WriteLine();
-            int n = content.Length;
+            string temp;
+            temp = title + content;
+            int n = temp.Length;
             int m = pat.Length;
             int i = m - 1;
 
@@ -163,7 +266,7 @@ namespace Newss
                 int j = m - 1;
                 do
                 {
-                    if (char.ToUpperInvariant(pat[j]) == char.ToUpperInvariant(content[i]))
+                    if (char.ToUpperInvariant(pat[j]) == char.ToUpperInvariant(temp[i]))
                     {
                         if (j == 0)
                         {
@@ -177,7 +280,7 @@ namespace Newss
                     }
                     else
                     {
-                        int lo = last[content[i]];
+                        int lo = last[temp[i]];
                         i = i + m - Math.Min(j, 1 + lo);
                         j = m - 1;
                     }

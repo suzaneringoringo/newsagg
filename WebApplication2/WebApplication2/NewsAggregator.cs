@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel.Syndication;
+using System.Text.RegularExpressions;
 using System.Xml;
 
 namespace NewsAgt
@@ -34,27 +35,37 @@ namespace NewsAgt
         {
             for (int i = 0; i < news.Count; ++i)
             {
-                if (news[i].GetDate().CompareTo(ne.GetDate()) > 0)
+                if (news[i].GetDate().CompareTo(ne.GetDate()) <= 0)
                 {
-                    news.Insert(i, ne);
+                    if (news[i].GetTitle().CompareTo(ne.GetTitle()) != 0)
+                    {
+                        news.Insert(i, ne);
+                    }
                     return;
                 }
             }
             news.Add(ne);
         }
 
-        public void ParseDetik(string pat)
+        public static SyndicationFeed getFeed(string url)
+        {
+            XmlReader xml = XmlReader.Create(url);
+            SyndicationFeed feed = SyndicationFeed.Load(xml);
+            xml.Close();
+            return feed;
+        }
+
+        public void ParseDetik(string pat, string radio)
         {
             string url = "http://rss.detik.com/index.php/";
-            string[] set = {"detikcom", "indeks", "finance", "hot", "inet", "sport",
-                            "otomotif", "wolipop", "health"};
+            //string[] set = { "detikcom" , "indeks", "finance", "hot", "inet", "sport",
+            //                "otomotif", "wolipop", "health"};
+            string[] set = { "detikcom" };
             foreach (string st in set)
             {
                 try
                 {
-                    XmlReader xml = XmlReader.Create(url + st);
-                    SyndicationFeed feed = SyndicationFeed.Load(xml);
-                    xml.Close();
+                    SyndicationFeed feed = getFeed(url + st);
                     foreach (SyndicationItem item in feed.Items)
                     {
                         News temp = new News(item.Title.Text, item.PublishDate.DateTime,
@@ -63,27 +74,109 @@ namespace NewsAgt
                         {
                             if (st == "wolipop" || st == "health")
                             {
-                                temp.ParseContent("text_detail");
+                                temp.ParseContentDetik("text_detail");
                             }
                             else
                             {
-                                temp.ParseContent("detail_text");
+                                temp.ParseContentDetik("detail_text");
                             }
-                            if (temp.StringMatchingKMP(pat) != -1)
+                            if (temp.StringMatching(pat, radio) != -1)
                             {
                                 Add(temp);
                             }
                         }
                         catch (Exception)
                         {
-
                         }
                     }
                 }
                 catch (Exception)
                 {
-
                 }
+            }
+        }
+
+        public void ParseViva(string pat, string radio)
+        {
+            string url = "http://rss.viva.co.id/get/all";
+            try
+            {
+                SyndicationFeed feed = getFeed(url);
+                foreach (SyndicationItem item in feed.Items)
+                {
+                    News temp = new News(item.Title.Text, item.PublishDate.DateTime,
+                                        item.Links.First().Uri.ToString());
+                    try
+                    {
+                        temp.ParseContentViva();
+                        if (temp.StringMatching(pat, radio) != -1)
+                        {
+                            Add(temp);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        public void ParseTempo(string pat, string radio)
+        {
+            string url = "https://www.tempo.co/rss/terkini";
+            try
+            {
+                SyndicationFeed feed = getFeed(url);
+                foreach (SyndicationItem item in feed.Items)
+                {
+                    News temp = new News(item.Title.Text, item.PublishDate.DateTime,
+                                        item.Links.First().Uri.ToString());
+                    try
+                    {
+                        temp.ParseContentTempo();
+                        //if (temp.StringMatching(pat, radio) != -1)
+                        //{
+                            Add(temp);
+                        //}
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        public void ParseAntara(string pat, string radio)
+        {
+            string url = "http://www.antaranews.com/rss/terkini";
+            try
+            {
+                SyndicationFeed feed = getFeed(url);
+                foreach (SyndicationItem item in feed.Items)
+                {
+                    News temp = new News(item.Title.Text, item.PublishDate.DateTime,
+                                        item.Links.First().Uri.ToString());
+                    try
+                    {
+                        temp.ParseContentAntara();
+                        if (temp.StringMatching(pat, radio) != -1)
+                        {
+                            Add(temp);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+            }
+            catch (Exception)
+            {
             }
         }
     }
