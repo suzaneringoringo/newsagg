@@ -1,5 +1,4 @@
-﻿using Mapp;
-using Newss;
+﻿using Newss;
 using NewsAgt;
 using System;
 using System.Web.UI.HtmlControls;
@@ -18,17 +17,19 @@ namespace WebApplication2
         protected void Cari_Click(object sender, EventArgs e)
         {
             NewsAggregator na = new NewsAggregator();
+
             na.ParseViva(SearchBox.Text, RadioButtonList1.SelectedValue);
             if (na.news.Count == 0)
             {
                 result.InnerText = "No result found";
                 return;
             }
-            
             result.InnerText = "Displaying " + na.news.Count.ToString() + " results:";
 
             foreach (News n in na.news)
             {
+                string pattern;
+                pattern = SearchBox.Text;
                 HtmlGenericControl li = new HtmlGenericControl("li");
                 list.Controls.Add(li);
                 HtmlGenericControl img = new HtmlGenericControl("img");
@@ -48,12 +49,6 @@ namespace WebApplication2
                 li.Controls.Add(p2);
                 li.Controls.Add(p);
             }
-            Map map1 = new Map();
-            map1.FindCoordinates(SearchBox.Text);
-            lat = map1.GetLat();
-            lng = map1.GetLng();
-            Session["lat"] = lat.ToString();
-            Session["lng"] = lng.ToString();
         }
     }
 }

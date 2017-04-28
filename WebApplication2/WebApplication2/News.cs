@@ -16,6 +16,9 @@ namespace Newss
         private HtmlDocument document;
         private static HtmlWeb web = new HtmlWeb();
 
+        /*
+         * Konstruktor
+         */
         public News()
         {
             title = "";
@@ -265,14 +268,16 @@ namespace Newss
         public int StringMatchingBoyerMoore(string pat)
         {
             int[] last = BuildLast(pat);
-            for (int l = 0; l < 128; l++)
+            /*
+            for (int l = 0; l < 97; l++)
             {
                 Console.Write(last[l] + " ");
             }
+            */
             Console.WriteLine();
-            string temp;
-            temp = title + content;
-            int n = temp.Length;
+            string text;
+            text = title + content;
+            int n = text.Length;
             int m = pat.Length;
             int i = m - 1;
 
@@ -285,7 +290,7 @@ namespace Newss
                 int j = m - 1;
                 do
                 {
-                    if (char.ToUpperInvariant(pat[j]) == char.ToUpperInvariant(temp[i]))
+                    if (char.ToUpperInvariant(pat[j]).ToString() == char.ToUpperInvariant(text[i]).ToString())
                     {
                         if (j == 0)
                         {
@@ -299,8 +304,16 @@ namespace Newss
                     }
                     else
                     {
-                        int lo = last[temp[i]];
-                        i = i + m - Math.Min(j, 1 + lo);
+                        int lo;
+                        if ((char.ToUpper(text[i]) < 0) || (char.ToUpper(text[i]) > 127))
+                        {
+                            i++;
+                        }
+                        else
+                        {
+                            lo = last[char.ToUpperInvariant(text[i])];
+                            i = i + m - Math.Min(j, 1 + lo);
+                        }
                         j = m - 1;
                     }
                 } while (i <= (n - 1));
@@ -366,7 +379,7 @@ namespace Newss
 
             for (int i = 0; i < pattern.Length; i++)
             {
-                last[pattern[i]] = i;
+                last[char.ToUpperInvariant(pattern[i])] = i;
             }
 
             return last;

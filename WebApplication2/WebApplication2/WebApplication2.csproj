@@ -63,7 +63,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="about.html" />
-    <Content Include="GoogleMap.aspx" />
     <Content Include="icon.png" />
     <Content Include="kursor.png" />
     <Content Include="logo.png" />
@@ -76,14 +75,6 @@
     <Content Include="WebForm2.aspx" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GoogleMap.aspx.cs">
-      <DependentUpon>GoogleMap.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="GoogleMap.aspx.designer.cs">
-      <DependentUpon>GoogleMap.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Map.cs" />
     <Compile Include="NewsAggregator.cs" />
     <Compile Include="News.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
