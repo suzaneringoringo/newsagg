@@ -69,7 +69,7 @@ namespace NewsAgt
                     foreach (SyndicationItem item in feed.Items)
                     {
                         News temp = new News(item.Title.Text, item.PublishDate.DateTime,
-                                            item.Links.First().Uri.ToString());
+                                            item.Links.First().Uri.ToString(), item.Summary.Text);
                         try
                         {
                             if (st == "wolipop" || st == "health")
@@ -105,7 +105,7 @@ namespace NewsAgt
                 foreach (SyndicationItem item in feed.Items)
                 {
                     News temp = new News(item.Title.Text, item.PublishDate.DateTime,
-                                        item.Links.First().Uri.ToString());
+                                        item.Links.First().Uri.ToString(), item.Summary.Text);
                     try
                     {
                         temp.ParseContentViva();
@@ -133,7 +133,7 @@ namespace NewsAgt
                 foreach (SyndicationItem item in feed.Items)
                 {
                     News temp = new News(item.Title.Text, item.PublishDate.DateTime,
-                                        item.Links.First().Uri.ToString());
+                                        item.Links.First().Uri.ToString(), item.Summary.Text);
                     try
                     {
                         temp.ParseContentTempo();
@@ -161,7 +161,7 @@ namespace NewsAgt
                 foreach (SyndicationItem item in feed.Items)
                 {
                     News temp = new News(item.Title.Text, item.PublishDate.DateTime,
-                                        item.Links.First().Uri.ToString());
+                                        item.Links.First().Uri.ToString(), item.Summary.Text);
                     try
                     {
                         temp.ParseContentAntara();

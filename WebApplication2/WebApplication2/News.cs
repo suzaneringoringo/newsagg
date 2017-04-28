@@ -12,6 +12,7 @@ namespace Newss
         private DateTime pubDate;
         private string link;
         private string content;
+        private string image;
         private HtmlDocument document;
         private static HtmlWeb web = new HtmlWeb();
 
@@ -21,15 +22,17 @@ namespace Newss
             pubDate = new DateTime();
             link = "";
             content = "";
+            image = "";
             document = new HtmlDocument();
         }
 
-        public News(string ti, DateTime date, string li)
+        public News(string ti, DateTime date, string li, string su)
         {
             title = ti;
             pubDate = date;
             link = li;
             content = "";
+            image = ParseImage(su);
             document = new HtmlDocument();
         }
 
@@ -39,6 +42,7 @@ namespace Newss
             pubDate = ne.pubDate;
             link = ne.link;
             content = ne.content;
+            image = ne.image;
             document = ne.document;
         }
 
@@ -60,6 +64,21 @@ namespace Newss
         public string GetContent()
         {
             return content;
+        }
+
+        public string GetImage()
+        {
+            return image;
+        }
+
+        public string ParseImage(string su)
+        {
+            int st = 0;
+            while (su[st] != '"') ++st;
+            ++st;
+            int length = 1;
+            while (su[st + length] != '"') ++length;
+            return su.Substring(st, length);
         }
 
         public void RemoveComments(HtmlNode node)
@@ -301,6 +320,7 @@ namespace Newss
             Console.WriteLine(title);
             Console.WriteLine(pubDate.ToString());
             Console.WriteLine(content);
+            Console.WriteLine(image);
         }
 
         public static int[] computeFail(String pattern)
