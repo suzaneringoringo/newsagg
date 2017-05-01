@@ -8,32 +8,37 @@
 	<title>NEWSs | News Aggregator</title>
 	<link rel="shortcut icon" href="img/icon.png"/>
 	<style>
-		body {
-			font-family : Arial , Helvetica, sans-serif;
-			cursor:url("img/kursor.png"),auto;
-		}
+		#map {
+        margin : auto;
+      }
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        font-family : Arial , Helvetica, sans-serif;
+		cursor:url("img/kursor.png"),auto;
+      }
+      #logo {
+		margin : 0 auto;
+		text-align : center;
+	  }
+	  #navigation {
+		text-align : center;
+        color :#cccccc;
+		background : #000000;
+		height : 35px;
+		line-height: 35px;
+		vertical-align: middle;
+	  }
+      #imglogo {
+		height : 230px;
+	  }
 		
-		#logo {
-			margin : 0 auto;
-			text-align : center;
-		}
-		#navigation {
-			text-align : center;
-            color :#cccccc;
-			background : #000000;
-			height : 35px;
-			line-height: 35px;
-			vertical-align: middle;
-		}
-		#imglogo {
-			height : 230px;
-		}
-		
-		a {
-			text-decoration : none;
-		}
-		
-        a:link {
+	  a {
+		text-decoration : none;
+	  }
+
+      a:link {
             color:#000000;
             font-weight :bold;
         }
@@ -164,14 +169,43 @@
         
 	</div>
     </div>
-        <footer>
+</section>
+    <div class="span"></div>
+    <div id="map"></div>
+      <footer>
 			<div id="footer">
 				<p><br/> "Tidak ada cara yang terbaik, tetapi selalu ada cara yang lebih baik." - Rinaldi Munir, 2009.
 				<br/> &copy; ValakRingo2Nyo 
 				</p>
 			</div>
 		</footer>
-</section>
+    <script type="text/javascript" lang="javascript">
+      
+      function geocodeAddress() {
+        var geocoder = new google.maps.Geocoder();
+        var address = document.getElementById('SearchBox').value;
+        if (address) {
+            geocoder.geocode({ 'address': address }, function (results, status) {
+                if (status === 'OK') {
+                    document.getElementById('map').style.width = "30%";
+                    document.getElementById('map').style.height = "30%";
+                    var map = new google.maps.Map(document.getElementById('map'), {
+                        zoom: 8,
+                        center: results[0].geometry.location
+                    });
+                    var marker = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location
+                    });
+                }
+            });
+        }
+      }
+    </script>
+    <script  async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBOERYb1iBIgutymykmK7YaAMdhpP9USVA&callback=geocodeAddress">
+    </script>
+
 <a id="top" style ="display:inline;" href="#"><img src="img/top.png"/></a>
 </body>
 </html>

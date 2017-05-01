@@ -13,3 +13,9 @@ C:\Users\W8.1\Documents\Visual Studio 2015\Projects\newsagg\WebApplication2\WebA
 C:\Users\W8.1\Documents\Visual Studio 2015\Projects\newsagg\WebApplication2\WebApplication2\obj\Debug\WebApplication2.dll
 C:\Users\W8.1\Documents\Visual Studio 2015\Projects\newsagg\WebApplication2\WebApplication2\obj\Debug\WebApplication2.pdb
 C:\Users\W8.1\Documents\Visual Studio 2015\Projects\newsagg\WebApplication2\WebApplication2\obj\Debug\WebApplication2.csprojResolveAssemblyReference.cache
+C:\Users\W8.1\Desktop\StrAlgo3-15021\src\WebApplication2\bin\WebApplication2.dll.config
+C:\Users\W8.1\Desktop\StrAlgo3-15021\src\WebApplication2\bin\WebApplication2.dll
+C:\Users\W8.1\Desktop\StrAlgo3-15021\src\WebApplication2\bin\WebApplication2.pdb
+C:\Users\W8.1\Desktop\StrAlgo3-15021\src\WebApplication2\obj\Debug\WebApplication2.csprojResolveAssemblyReference.cache
+C:\Users\W8.1\Desktop\StrAlgo3-15021\src\WebApplication2\obj\Debug\WebApplication2.dll
+C:\Users\W8.1\Desktop\StrAlgo3-15021\src\WebApplication2\obj\Debug\WebApplication2.pdb

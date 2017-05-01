@@ -18,6 +18,10 @@ namespace WebApplication2
         {
             NewsAggregator na = new NewsAggregator();
 
+            News.BuildLast(SearchBox.Text);
+            News.computeFail(SearchBox.Text);
+            na.ParseDetik(SearchBox.Text, RadioButtonList1.SelectedValue);
+            na.ParseAntara(SearchBox.Text, RadioButtonList1.SelectedValue);
             na.ParseViva(SearchBox.Text, RadioButtonList1.SelectedValue);
             if (na.news.Count == 0)
             {

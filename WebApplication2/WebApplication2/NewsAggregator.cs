@@ -58,9 +58,8 @@ namespace NewsAgt
         public void ParseDetik(string pat, string radio)
         {
             string url = "http://rss.detik.com/index.php/";
-            //string[] set = { "detikcom" , "indeks", "finance", "hot", "inet", "sport",
-            //                "otomotif", "wolipop", "health"};
-            string[] set = { "detikcom" };
+            string[] set = { "detikcom" , "indeks", "finance", "hot", "inet", "sport",
+                            "otomotif", "wolipop", "health"};
             foreach (string st in set)
             {
                 try
@@ -116,39 +115,13 @@ namespace NewsAgt
                     }
                     catch (Exception)
                     {
+                        
                     }
                 }
             }
             catch (Exception)
             {
-            }
-        }
-
-        public void ParseTempo(string pat, string radio)
-        {
-            string url = "https://www.tempo.co/rss/terkini";
-            try
-            {
-                SyndicationFeed feed = getFeed(url);
-                foreach (SyndicationItem item in feed.Items)
-                {
-                    News temp = new News(item.Title.Text, item.PublishDate.DateTime,
-                                        item.Links.First().Uri.ToString(), item.Summary.Text);
-                    try
-                    {
-                        temp.ParseContentTempo();
-                        //if (temp.StringMatching(pat, radio) != -1)
-                        //{
-                            Add(temp);
-                        //}
-                    }
-                    catch (Exception)
-                    {
-                    }
-                }
-            }
-            catch (Exception)
-            {
+                
             }
         }
 
@@ -172,11 +145,13 @@ namespace NewsAgt
                     }
                     catch (Exception)
                     {
+                        
                     }
                 }
             }
             catch (Exception)
             {
+                
             }
         }
     }

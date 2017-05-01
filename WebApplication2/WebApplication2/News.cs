@@ -1,4 +1,6 @@
-﻿using System;
+﻿using NewsAgt;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -15,6 +17,8 @@ namespace Newss
         private string image;
         private HtmlDocument document;
         private static HtmlWeb web = new HtmlWeb();
+        private static Dictionary<char, int> last;
+        private static int[] fail;
 
         /*
          * Konstruktor
@@ -155,19 +159,7 @@ namespace Newss
                 }
             }
             content = sb.ToString().Trim();
-        }
-
-        public void ParseContentTempo()
-        {
-            LoadLink();
-            StringBuilder sb = new StringBuilder();
-            foreach (HtmlNode node in document.DocumentNode.SelectNodes("//p"))
-            {
-                RemoveAAndSpan(node);
-                sb.Append(node.InnerText);
-                //break;
-            }
-            content = sb.ToString().Trim();
+            content = content.Substring(13);
         }
 
         public void ParseContentAntara()
@@ -189,11 +181,11 @@ namespace Newss
         public int StringMatching(string pat, string rad)
         {
             int ind;
-            if (rad == "Boyer-Moore")
+            if (rad.CompareTo("Boyer-Moore") == 0)
             {
                 ind = StringMatchingBoyerMoore(pat);
             }
-            else if (rad == "KMP")
+            else if (rad.CompareTo("KMP") == 0)
             {
                 ind = StringMatchingKMP(pat);
             }
@@ -201,30 +193,25 @@ namespace Newss
             {
                 ind = StringMatchingRegex(pat);
             }
-            if ((ind != -1) && (ind >= title.Length))
+            if ((ind != -1) && (ind >= content.Length)) // match in title
             {
-                if (ind < ((content.Length) + (title.Length) - 1))
-                {
-                    content = (content.Substring(ind - title.Length, 200) + " . . . .");
-                }
-                else
-                {
-                    content = content.Substring(ind - title.Length, 200);
-                }
-                if (ind >= title.Length)
-                {
-                    content = (". . . " + content);
-                }
-            }
-            else
-            {
-                if (content.Length > 200)
-                {
-                    content = content.Substring(0, 200) + " . . . .";
-                }
-                else
+                if (content.Length >= 200)
                 {
                     content = content.Substring(0, 200);
+                    content = content + " . . . .";
+                }
+            }
+            else if (ind != -1)
+            {
+                content = content.Substring(ind);
+                if (ind > 0)
+                {
+                    content = ". . . . " + content;
+                }
+                if (content.Length >= 200)
+                {
+                    content = content.Substring(0, 200);
+                    content = content + " . . . .";
                 }
             }
             return ind;
@@ -233,11 +220,9 @@ namespace Newss
         public int StringMatchingKMP(string pattern)
         {
             string temp;
-            temp = title + content;
+            temp = content + title;
             int n = temp.Length;
             int m = pattern.Length;
-
-            int[] fail = computeFail(pattern);
 
             int i = 0;
             int j = 0;
@@ -267,16 +252,8 @@ namespace Newss
 
         public int StringMatchingBoyerMoore(string pat)
         {
-            int[] last = BuildLast(pat);
-            /*
-            for (int l = 0; l < 97; l++)
-            {
-                Console.Write(last[l] + " ");
-            }
-            */
-            Console.WriteLine();
             string text;
-            text = title + content;
+            text = content + title;
             int n = text.Length;
             int m = pat.Length;
             int i = m - 1;
@@ -305,15 +282,15 @@ namespace Newss
                     else
                     {
                         int lo;
-                        if ((char.ToUpper(text[i]) < 0) || (char.ToUpper(text[i]) > 127))
+                        if (last.ContainsKey(char.ToUpperInvariant(text[i])))
                         {
-                            i++;
+                            lo = last[char.ToUpperInvariant(text[i])];
                         }
                         else
                         {
-                            lo = last[char.ToUpperInvariant(text[i])];
-                            i = i + m - Math.Min(j, 1 + lo);
+                            lo = -1;
                         }
+                        i = i + m - Math.Min(j, 1 + lo);
                         j = m - 1;
                     }
                 } while (i <= (n - 1));
@@ -336,9 +313,9 @@ namespace Newss
             Console.WriteLine(image);
         }
 
-        public static int[] computeFail(String pattern)
+        public static void computeFail(String pattern)
         {
-            int[] fail = new int[pattern.Length];
+            fail = new int[pattern.Length];
             fail[0] = 0;
 
             int m = pattern.Length;
@@ -363,26 +340,18 @@ namespace Newss
                     i++;
                 }
             }
-            return fail;
         }
 
-        public static int[] BuildLast(String pattern)
+        public static void BuildLast(String pattern)
         /* Return array storing index of last
          * occurence of each ASCII char in pattern. */
         {
-            int[] last = new int[128]; // ASCII char set
-
-            for (int i = 0; i < 128; i++)
-            {
-                last[i] = -1; // initialize array
-            }
+            last = new Dictionary<char, int>();
 
             for (int i = 0; i < pattern.Length; i++)
             {
                 last[char.ToUpperInvariant(pattern[i])] = i;
             }
-
-            return last;
         }
     }
 }
