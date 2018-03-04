@@ -13,3 +13,5 @@ Pastikan visual studio memiliki fitur asp.net.
 Lalu di Home terdapat textbox untuk mengisi keyword. Isi dengan keyword apapun, 
 pilih antara ketiga macampencarian. Lalu tekan tombol cari. Jawaban akan didapat 
 setelah web mencari semua rss di atas.
+
+![ss](https://github.com/suzaneringoringo/newsagg/blob/master/ss_newss.jpg)
